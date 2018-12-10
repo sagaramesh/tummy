@@ -9,7 +9,7 @@ public class Emitter : MonoBehaviour {
 	//every obj before the index will be emitted based on BPM
 	//every obj after the index will be randomly emitted
 
-	public int obstacleStartIndex= 2;
+	//public int obstacleStartIndex= 2;
 
 
 
@@ -43,7 +43,7 @@ public class Emitter : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		emitOffBeat ();
+		//emitOffBeat ();
 	}
 	
 	// Update is called once per frame
@@ -69,20 +69,22 @@ public class Emitter : MonoBehaviour {
 		if (internalTimer()) {
 
 			//random select
-			int objIndex = Random.Range (0, obstacleStartIndex);
+			//int objIndex = Random.Range (0, obstacleStartIndex);
+            int objIndex = Random.Range(0, objs.Length);
 
 		
 			//Quaternion randRot = Random.rotation;
-			GameObject objNew =Instantiate (objs[objIndex], createRandomPos(), Random.rotation);
+			//GameObject objNew =Instantiate (objs[objIndex], createRandomPos(), Random.rotation);
+            GameObject objNew =Instantiate (objs[objIndex], transform.position, Random.rotation);
 			Rigidbody rb = objNew.GetComponent<Rigidbody> ();
 
 
-			rb.velocity = new Vector3 (0, 0, -1f*emissionSpeed);
+			rb.velocity = new Vector3 (0, -1f*emissionSpeed, 0);
 
 		}
 	}
 
-	void emitOffBeat(){
+	/*void emitOffBeat(){
 
 		if (offsetMet ()) {
 			int objIndex = Random.Range (obstacleStartIndex, objs.Length);
@@ -99,17 +101,17 @@ public class Emitter : MonoBehaviour {
 
         //Invoke ("emitOffBeat", Random.Range (0, bpSecond/emitObstacleFrequency));
         Invoke ("emitOffBeat", Random.Range (1, 5));
-    }
+    }*/
 
     //calculate a randomized position based on the range
-    Vector3 createRandomPos(){
+    /*Vector3 createRandomPos(){
 		Vector3 newPos = transform.position;
 		float curRange = Random.Range (0, emitY_Range);
 		newPos.x = newPos.x - emitX_Range/2 + curRange;
 		newPos.y = newPos.y - emitY_Range / 2 + curRange;
 		newPos.z -= 5;
 		return newPos;
-	}
+	}*/
 
 
 	bool internalTimer(){
