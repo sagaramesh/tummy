@@ -44,6 +44,7 @@ public class Emitter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//emitOffBeat ();
+        emitOnBeat();
 	}
 	
 	// Update is called once per frame

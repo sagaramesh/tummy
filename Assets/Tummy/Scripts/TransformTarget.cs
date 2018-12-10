@@ -21,7 +21,8 @@ public class TransformTarget : MonoBehaviour {
 	void Update () {
 
         target.transform.localPosition = sceneManager.GetComponent<ScoreClient>().GetPosition();
-        if (target.transform.localEulerAngles.y >= -28.0f && target.transform.localEulerAngles.y <= 28.0f)
+        //if (target.transform.localEulerAngles.y >= -28.0f && target.transform.localEulerAngles.y <= 28.0f)
         target.transform.localEulerAngles = new Vector3 (targetXRot, sceneManager.GetComponent<ScoreClient>().GetRotation().y, targetZRot);
+        //target.transform.localEulerAngles = sceneManager.GetComponent<ScoreClient>().GetRotation();
 	}
 }

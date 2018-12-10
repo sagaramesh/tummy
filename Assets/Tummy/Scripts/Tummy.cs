@@ -25,12 +25,16 @@ namespace TMPro.Examples
         [SerializeField]
         private TextMeshPro scoreText;
         [SerializeField]
-        private float mouthClosedValue = 80.0f;
+        private float mouthClosedValue = 0;
+
+        private AudioSource aSource;
+        public AudioClip fail;
+        public AudioClip gulp;
 
         // Use this for initialization
         void Start()
         {
-
+            aSource = gameObject.GetComponent<AudioSource>();
         }
 
         // Update is called once per frame
@@ -43,43 +47,15 @@ namespace TMPro.Examples
                 Time.timeScale = 0;
             }
 
-            if (stomachBody.GetComponent<SkinnedMeshRenderer>().GetBlendShapeWeight(5) >= mouthClosedValue)
-            {
-                mouthOpen = false;
-            }
-            else
+            if (stomachBody.GetComponent<SkinnedMeshRenderer>().GetBlendShapeWeight(2) > 5)
             {
                 mouthOpen = true;
             }
-
-            CheckCollision();
-        }
-
-        void CheckCollision()
-        {
-
-            if (mouthOpen && collidedFood == "Good" || Input.GetKeyDown(KeyCode.UpArrow))
+            else
             {
-                score++;
-                scoreText.SetText("Score: " + score.ToString());
-                print("Score: " + score);
+                mouthOpen = false;
             }
-            if (mouthOpen && collidedFood == "Bad" || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                life--;
-                livesText.SetText("Lives: " + life.ToString());
-                print("Life: " + life);
-            }
-            if (mouthOpen == false && collidedFood == "Good")
-            {
-                life--;
-                livesText.SetText("Lives: " + life.ToString());
-                print("Life: " + life);
-            }
-            if (mouthOpen == false && collidedFood == "Bad")
-            {
-                print("Continue game.");
-            }
+            print(mouthOpen);
         }
 
         private void OnTriggerEnter(Collider col)
@@ -87,13 +63,45 @@ namespace TMPro.Examples
             if (col.tag == "Good")
             {
                 collidedFood = "Good";
-                CheckCollision();
             }
             if (col.tag == "Bad")
             {
                 collidedFood = "Bad";
-                CheckCollision();
             }
+
+            // MOUF LOGIC
+
+            //eat good food
+            if (mouthOpen && collidedFood == "Good" || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                score++;
+                scoreText.SetText("Score: " + score.ToString());
+                col.gameObject.SetActive(false);
+                //PLAY GOOD SOUND
+                aSource.clip = gulp;
+                aSource.Play();
+            }
+            //eat bad food
+            if (mouthOpen && collidedFood == "Bad" || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                life--;
+                livesText.SetText("Lives: " + life.ToString());
+                col.gameObject.SetActive(false);
+                // PLAY BAD SOUND
+                aSource.clip = fail;
+                aSource.Play();
+            }
+            if (mouthOpen == false && collidedFood == "Good")
+            {
+                life--;
+                livesText.SetText("Lives: " + life.ToString());
+                // PLAY BAD SOUND
+            }
+            if (mouthOpen == false && collidedFood == "Bad")
+            {
+            }
+
+            collidedFood = "";
         }
     }
 }
