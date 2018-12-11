@@ -40,6 +40,16 @@ namespace TMPro.Examples
         // Update is called once per frame
         void Update()
         {
+
+            // Reset game:
+            if (Input.GetKeyDown(KeyCode.Space)){
+                score = 0;
+                life = 3;
+                livesText.SetText("Lives: " + life.ToString());
+                scoreText.SetText("Score: " + score.ToString());
+                Time.timeScale = 1;
+            }
+
             if (life == 0)
             {
                 print("Game over!");
